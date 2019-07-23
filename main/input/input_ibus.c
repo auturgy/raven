@@ -61,8 +61,8 @@ static void input_ibus_frame_callback(void *data, ibus_frame_t *frame)
     {
         for (int i = 0; i < IBUS_NUM_CHANNELS; i++)
         {
-            rc_data_update_channel(input_ibus->input.rc_data, i, 
-                input_ibus_channel_value_mapping(frame->payload.ch[i]), now);
+            rc_data_update_channel(input_ibus->input.rc_data, i,
+                                   input_ibus_channel_value_mapping(frame->payload.ch[i]), now);
         }
         break;
     }
@@ -102,8 +102,8 @@ static bool input_ibus_open(void *input, void *config)
 
     serial_port_config_t serial_config = {
         .baud_rate = IBUS_BAUDRATE,
-        .tx_pin = config_ibus->gpio,
-        .rx_pin = config_ibus->gpio,
+        .tx = config_ibus->gpio,
+        .rx = config_ibus->gpio,
         .tx_buffer_size = 128,
         .parity = SERIAL_PARITY_DISABLE,
         .stop_bits = SERIAL_STOP_BITS_1,

@@ -16,6 +16,8 @@ GIT_REVISION := $(shell git rev-parse --short HEAD)
 
 CPPFLAGS += -DGIT_REVISION=\"$(GIT_REVISION)\" -DVERSION=\"$(VERSION)\"
 
+RELEASE ?=
+
 ifeq ($(RELEASE),1)
 CPPFLAGS += -DRAVEN_RELEASE
 endif
@@ -24,6 +26,8 @@ WERROR ?=
 ifeq ($(WERROR),1)
 CPPFLAGS += -Werror
 endif
+
+V ?=
 
 ifeq ($(V),1)
 STDOUT_REDIR :=
@@ -166,7 +170,7 @@ all:
 ci-build:
 	@ for target in $(VALID_TARGETS); do \
 		echo "Building $$target"; \
-		TARGET=$$target $(MAKE) 1> /dev/null ; \
+		TARGET=$$target $(MAKE) 1> /dev/null || exit 1; \
 		TARGET=$$target $(MAKE) clean 1> /dev/null; \
 	done
 
@@ -178,3 +182,9 @@ show-targets:
 
 show-platforms:
 	@echo "Valid platforms are $(VALID_PLATFORMS)"
+
+format:
+	./format.sh format
+
+format-check:
+	./format.sh check
